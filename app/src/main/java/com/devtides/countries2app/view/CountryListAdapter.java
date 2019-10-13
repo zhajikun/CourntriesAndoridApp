@@ -1,10 +1,10 @@
 package com.devtides.countries2app.view;
 
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +15,7 @@ import com.devtides.countries2app.model.CountryModel;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.CountryViewHolder>{
 
@@ -40,6 +41,7 @@ public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull CountryViewHolder holder, int position) {
+        holder.bind(countries.get(position));
     }
 
     @Override
@@ -52,14 +54,20 @@ public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.
         @BindView(R.id.imageView)
         ImageView countryImage;
 
+        @BindView(R.id.name)
+        TextView countryName;
 
+        @BindView(R.id.capital)
+        TextView countryCapital;
 
         public CountryViewHolder(@NonNull View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
         }
 
         void bind(CountryModel country){
-
+           countryName.setText(country.getCountryName());
+           countryCapital.setText(country.getCapital());
         }
 
     }
