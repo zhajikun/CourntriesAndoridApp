@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.devtides.countries2app.R;
@@ -29,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     TextView listError;
 
     @BindView(R.id.loading_view)
-    TextView loadingView;
+    ProgressBar loadingView;
 
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout refreshLayout;
@@ -57,7 +59,24 @@ public class MainActivity extends AppCompatActivity {
     private void observeViewModel() {
         viewModel.countries.observe(this, countryModels -> {
             if(countryModels != null){
-                //counriesList
+                counriesList.setVisibility(View.VISIBLE);
+                adapter.updateCountries(countryModels);
+            }
+        });
+
+        viewModel.countryLoadError.observe(this, isError -> {
+            if(isError != null){
+              listError.setVisibility(isError ?  View.VISIBLE : View.GONE);
+            }
+        });
+
+        viewModel.loading.observe(this, isLoading -> {
+            if(isLoading != null){
+              loadingView.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+              if(isLoading){
+                  listError.setVisibility(View.GONE);
+                  counriesList.setVisibility(View.GONE);
+              }
             }
         });
     }
